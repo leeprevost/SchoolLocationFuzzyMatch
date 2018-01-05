@@ -1,4 +1,7 @@
 Data/*
 .ipynb_checkpoints/*
 
-sample_match*.*
+*.csv
+*.xlsx
+
+#updated to exclude sensitive files
