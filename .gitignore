@@ -1,7 +1,6 @@
 Data/*
 .ipynb_checkpoints/*
 
-<<<<<<< HEAD
 *.csv
 *.xlsx
 
@@ -10,4 +9,4 @@ output/
 #updated to exclude sensitive files
 =======
 sample_match*.*
->>>>>>> c8bfee76cf755935d1a25d23acfbecc7419b1a45
+
