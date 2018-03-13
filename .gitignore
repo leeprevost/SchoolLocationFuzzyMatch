@@ -6,6 +6,8 @@ Data/*
 
 output/
 
+data/
+
 #updated to exclude sensitive files
 =======
 sample_match*.*
