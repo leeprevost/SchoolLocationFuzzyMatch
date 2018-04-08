@@ -8,6 +8,8 @@ output/
 
 data/
 
+.spyproject/
+
 #updated to exclude sensitive files
 =======
 sample_match*.*
