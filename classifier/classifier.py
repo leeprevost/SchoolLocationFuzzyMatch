@@ -20,7 +20,7 @@ pipeline = Pipeline([
         ('ST', Pipeline([
             ('extract', ColumnExtractor(['ST'])),
             
-            ('one_hot', OneHotEncoder())
+            ('vectorize', CountVectorizer(ngram_range=(1, 2)))
         ])),
         
 

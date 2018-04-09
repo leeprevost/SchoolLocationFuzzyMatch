@@ -84,7 +84,7 @@ if __name__ == '__main__':
     #add a normalized school name column.
     
     x_cols = ['norm_SCH_NAME', 'ST']
-    y_col = 'level'
+    y_col = 'LEVEL'
     
     data['norm_SCH_NAME'] = k12_clean(data['SCH_NAME'])
     
