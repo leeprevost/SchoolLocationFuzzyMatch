@@ -1,6 +1,6 @@
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.linear_model import LogisticRegression, SGDClassifier
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.pipeline import FeatureUnion, Pipeline
 
 from .transformers import *
@@ -10,24 +10,19 @@ debugger = ('debug', DebugTransformer())
 
 pipeline = Pipeline([
     ('features', FeatureUnion([
-        ('RequestDesc', Pipeline([
-            ('extract', ColumnExtractor('RequestDesc')),
-            ('vectorize', TfidfVectorizer(ngram_range=(1, 2))),
+        ('norm_SCH_NAME', Pipeline([
+            ('extract', ColumnExtractor('norm_SCH_NAME')),
+            ('vectorize', CountVectorizer(ngram_range=(1, 2))),
             ('classify', ModelTransformer(SGDClassifier(
                 loss='modified_huber')))
             #debugger  # uncomment this to inspect ouput of ModelTransformer
         ])),
-        ('CraftID', Pipeline([
-            ('extract', ColumnExtractor(['CraftID'])),
-            ('fill_nan', FillNaTransformer(0)),
+        ('ST', Pipeline([
+            ('extract', ColumnExtractor(['ST'])),
+            
             ('one_hot', OneHotEncoder())
         ])),
-        ('Emergency', ColumnExtractor(['Emergency'])),
-        ('PriorityID', Pipeline([
-            ('extract', ColumnExtractor(['PriorityID'])),
-            ('fill_nan', FillNaTransformer(0)),
-            ('one_hot', OneHotEncoder())
-        ])),
+        
 
         # Experiements that haven't been valuable
         #('TimeOfDay', Pipeline([

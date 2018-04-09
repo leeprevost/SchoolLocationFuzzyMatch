@@ -1,3 +1,6 @@
+import string
+import pandas as pd
+
 def load_files(fname='usps.csv', output = 'dict'):
     """
     load abbreviation from file fname
@@ -12,6 +15,9 @@ def load_files(fname='usps.csv', output = 'dict'):
         col = df.columns[0]
         return df[col].tolist()
 
+
+USPS = load_files('usps.csv')
+SCHOOL_ABREV = load_files('school_abbrev.csv')
 
 def handle_strings(x, exclude=set(string.punctuation)):
     """
@@ -79,3 +85,26 @@ def norm_shorthand(inputValue, case = 'u', short_hand = []):
         
     return ' '.join(words)
 
+
+def k12_clean (text_col, case = 'u'):
+    
+    ''' Normalizes strings of K-12 type school or location descriptions
+    
+    text_col:    Pandas column of text strings
+    
+    returns:  normalized pandas column
+    
+    '''
+       
+    
+    
+        
+    
+    text_col = text_col.map(lambda x: normalizeText(x, case = case, d = SCHOOL_ABREV['replacement']))
+    text_col = text_col.map(lambda x: normalizeText(x, case = case, d=USPS))
+    text_col = text_col.map(lambda x: norm_shorthand(x, case = case))
+    
+    return text_col
+    
+    
+        
