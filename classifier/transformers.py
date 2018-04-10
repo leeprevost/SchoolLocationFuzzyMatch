@@ -140,7 +140,11 @@ class IsWeekendTransformer(TransformerMixin):
         return self
     
 class StringIndexer(BaseEstimator, TransformerMixin):
-    ''' Takes Pandas Category column and indexes it '''
+    ''' Takes Pandas Category column and indexes it 
+    
+        Requires previous transfomrmers to convert, then convert series to 
+        DataFrame.
+        '''
     
     def fit(self, X, y=None):
         return self
@@ -149,3 +153,16 @@ class StringIndexer(BaseEstimator, TransformerMixin):
         return X.apply(lambda s: s.cat.codes.replace(
             {-1: len(s.cat.categories)}
         ))
+        
+class GetPandasDummies (BaseEstimator, TransformerMixin):
+    ''' Takes Pandas column (categorical or string) and indexes it using pd.get_dummies() 
+    
+        Simplifies usage downstream of column selector.   .
+        '''
+        
+    def fit(self, X, y=None):
+        return self
+    def transform(self, X):
+        assert isinstance(X, pd.DataFrame)
+        return pd.get_dummies(X)
+        
