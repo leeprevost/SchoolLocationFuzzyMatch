@@ -143,7 +143,7 @@ if __name__ == '__main__':
                   indent=4,
                   separators=(',', ': '))
 
-    #compare('evaluation-best.json', filename)
+    compare('evaluation-best.json', filename)
 
     if args.confusion_matrix:
         cm = confusion_matrix(y_true, y_pred, labels=unique_labels)
