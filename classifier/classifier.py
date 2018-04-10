@@ -22,7 +22,7 @@ pipeline = Pipeline([
            ('extract', ColumnExtractor(['ST'])),
             
            ('le', LabelEncoder())
-        #])),
+        ])),
         
 
         # Experiements that haven't been valuable
