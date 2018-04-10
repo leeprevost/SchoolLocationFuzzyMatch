@@ -16,7 +16,7 @@ pipeline = Pipeline([
         ('norm_SCH_NAME', Pipeline([
             ('extract', ColumnExtractor('norm_SCH_NAME')),
             ('vectorize', CountVectorizer(ngram_range=(1, 2))),
-            ('select', SelectPercentile()),
+            ('select', SelectPercentile(percentile=5)),
             #('classify', ModelTransformer(SGDClassifier(
              #   loss='modified_huber')))
             #('classify', LinearSVC())
