@@ -95,11 +95,7 @@ def k12_clean (text_col, case = 'u'):
     returns:  normalized pandas column
     
     '''
-       
-    
-    
         
-    
     text_col = text_col.map(lambda x: normalizeText(x, case = case, d = SCHOOL_ABREV['replacement']))
     text_col = text_col.map(lambda x: normalizeText(x, case = case, d=USPS))
     text_col = text_col.map(lambda x: norm_shorthand(x, case = case))

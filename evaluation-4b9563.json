@@ -1,0 +1,13 @@
+{
+    "class_f1_scores": {
+        "Adult Education": 0.8125000000000001,
+        "Elementary": 0.9235514018691589,
+        "High": 0.8554796254112883,
+        "Middle": 0.8885662431941923,
+        "Not applicable": 0.6739130434782609,
+        "Not reported": 0.8780354706684856,
+        "Other": 0.35114503816793896,
+        "Ungraded": 0.0
+    },
+    "weighted_f1_score": 0.8583679099015243
+}

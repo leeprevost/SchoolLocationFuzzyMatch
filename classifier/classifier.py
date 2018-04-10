@@ -19,14 +19,13 @@ pipeline = Pipeline([
             ('select', SelectPercentile()),
             #('classify', ModelTransformer(SGDClassifier(
              #   loss='modified_huber')))
-            ('classify', LinearSVC())
+            #('classify', LinearSVC())
             #debugger  # uncomment this to inspect ouput of ModelTransformer
         ])),
         ('ST', Pipeline([
           ('extract', ColumnExtractor(['ST'])),
-          ('s2d', SeriesToDataFrame()),
-          ('se', StringIndexer()),
-          ('ohe', OneHotEncoder())
+          ('gd', GetPandasDummies()),
+          
         
         #   ('lb', LabelBinarizer()),
            
