@@ -82,12 +82,17 @@ if __name__ == '__main__':
 
     data = pd.read_csv(args.train_file, encoding='iso-8859-1')
     
-    #add a normalized school name column.
     
     x_cols = ['norm_SCH_NAME', 'ST']
     y_col = 'LEVEL'
     
+    #add a normalized school name column.
+
     data['norm_SCH_NAME'] = k12_clean(data['SCH_NAME'])
+    
+    #convert ST columnt to category
+    
+    data['ST'] = data['ST'].astype("category")
     
     X = data[x_cols]
     y = data[y_col]
