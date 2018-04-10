@@ -2,6 +2,7 @@ from sklearn.preprocessing import OneHotEncoder, LabelEncoder, LabelBinarizer
 from sklearn.linear_model import LogisticRegression, SGDClassifier
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.svm import LinearSVC
+from sklearn.feature_selection import SelectPercentile
 
 from sklearn.pipeline import FeatureUnion, Pipeline
 
@@ -15,6 +16,7 @@ pipeline = Pipeline([
         ('norm_SCH_NAME', Pipeline([
             ('extract', ColumnExtractor('norm_SCH_NAME')),
             ('vectorize', CountVectorizer(ngram_range=(1, 2))),
+            ('select', SelectPercentile())
             #('classify', ModelTransformer(SGDClassifier(
              #   loss='modified_huber')))
             #('classify', LinearSVC())
