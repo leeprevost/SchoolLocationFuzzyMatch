@@ -1,6 +1,7 @@
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 from sklearn.linear_model import LogisticRegression, SGDClassifier
 from sklearn.feature_extraction.text import CountVectorizer
+
 from sklearn.pipeline import FeatureUnion, Pipeline
 
 from .transformers import *
@@ -17,10 +18,10 @@ pipeline = Pipeline([
                 loss='modified_huber')))
             #debugger  # uncomment this to inspect ouput of ModelTransformer
         ])),
-        #('ST', Pipeline([
-        #   ('extract', ColumnExtractor(['ST'])),
-        #    
-        #    ('vectorize', CountVectorizer(ngram_range=(1, 2)))
+        ('ST', Pipeline([
+           ('extract', ColumnExtractor(['ST'])),
+            
+           ('le', LabelEncoder())
         #])),
         
 
