@@ -1,4 +1,4 @@
-from sklearn.base import TransformerMixin
+from sklearn.base import TransformerMixin, BaseEstimator
 from sklearn.cluster import KMeans
 import datetime
 import pandas as pd
@@ -138,3 +138,14 @@ class IsWeekendTransformer(TransformerMixin):
 
     def fit(self, X, y=None, **fit_params):
         return self
+    
+class StringIndexer(BaseEstimator, TransformerMixin):
+    ''' Takes Pandas Category column and indexes it '''
+    
+    def fit(self, X, y=None):
+        return self
+    def transform(self, X):
+        assert isinstance(X, pd.DataFrame)
+        return X.apply(lambda s: s.cat.codes.replace(
+            {-1: len(s.cat.categories)}
+        ))

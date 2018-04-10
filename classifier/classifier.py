@@ -22,13 +22,15 @@ pipeline = Pipeline([
             #('classify', LinearSVC())
             #debugger  # uncomment this to inspect ouput of ModelTransformer
         ])),
-        #('ST', Pipeline([
-        #  ('extract', ColumnExtractor(['ST'])),
-            
+        ('ST', Pipeline([
+          ('extract', ColumnExtractor(['ST'])),
+          ('s2d', SeriesToDataFrame()),
+          ('se', StringIndexer()),
+          ('ohe', OneHotEncoder()),
         
         #   ('lb', LabelBinarizer()),
            
-        #])),
+        ])),
         
 
         # Experiements that haven't been valuable
