@@ -17,11 +17,11 @@ pipeline = Pipeline([
                 loss='modified_huber')))
             #debugger  # uncomment this to inspect ouput of ModelTransformer
         ])),
-        ('ST', Pipeline([
-            ('extract', ColumnExtractor(['ST'])),
-            
-            ('vectorize', CountVectorizer(ngram_range=(1, 2)))
-        ])),
+        #('ST', Pipeline([
+        #   ('extract', ColumnExtractor(['ST'])),
+        #    
+        #    ('vectorize', CountVectorizer(ngram_range=(1, 2)))
+        #])),
         
 
         # Experiements that haven't been valuable

@@ -75,6 +75,7 @@ if __name__ == '__main__':
                         default=False,
                         dest='confusion_matrix',
                         help='Compute a confusion matrix')
+    
     args = parser.parse_args()
 
     np.random.seed(0)
@@ -90,8 +91,10 @@ if __name__ == '__main__':
     
     X = data[x_cols]
     y = data[y_col]
-    
     unique_labels = y.unique()
+    
+        
+    
     
     
 
