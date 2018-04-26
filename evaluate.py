@@ -83,8 +83,22 @@ if __name__ == '__main__':
     data = pd.read_csv(args.train_file, encoding='iso-8859-1')
     
     
+    
+    
     x_cols = ['norm_SCH_NAME', 'ST']
     y_col = 'LEVEL'
+    
+    # add support and admin training data
+    inc_data = pd.read_csv('support-admin training.csv')
+    
+    #map and rename the columsn from inc_data to line up with data
+    inc_data_cols = ['normLocDesc', 'class']
+    data_cols = ['SCH_NAME', 'LEVEL']
+    map = dict(zip(inc_data_cols, data_cols))
+    inc_data.rename(columns = map, inplace=True)
+    
+    data = data.append(inc_data[data_cols], ignore_index=True)
+    
     
     #add a normalized school name column.
 
