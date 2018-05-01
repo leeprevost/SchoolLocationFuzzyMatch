@@ -124,7 +124,7 @@ def ensure_build_dirs_exists():
 def produce_build_artifact(pipeline, train_file, instances):
     ensure_build_dirs_exists()
     joblib.dump(pipeline, path.join(
-        build_path(), 'data', 'pipeline.pkl'))
+        build_path(), 'pipeline.pkl'))
     copy_model_definition_into_build()
     add_package_setup_to_build(current_git_sha())
     add_readme_to_build(current_git_sha(), train_file, instances)
