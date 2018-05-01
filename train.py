@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import shutil
 
-from work_order_classifier.classifier import pipeline
+from classifier.classifier import pipeline
 from utils import current_git_sha
 
 
@@ -14,7 +14,7 @@ BASE_PATH = path.dirname(path.realpath(__file__))
 
 
 README_TEMPLATE = Template("""
-# Work Order Classifier Build
+# School Name Classifier build
 
 - Version `$version`
 - Trained on `$train_file` ($instances instances)
@@ -23,8 +23,8 @@ This build artifact includes a trained model, the source code for the model
 that was trained, and its python dependencies:
 
 - `setup.py` - package definition and dependencies
-- `work_order_classifier/*.py` - the model's source code
-- `work_order_classifier/data/pipeline.pkl` - the trained model
+- `SchoolLocationFuzzyMatch/*.py` - the model's source code
+- `SchoolLocationFuzzyMatch/data/pipeline.pkl` - the trained model
 
 The model is trained against a specific version of the source code and its
 dependencies (most importantly sklearn), and while unpickling it in an
@@ -34,11 +34,12 @@ details.
 
 ## Usage
 
+(as of production of this, I have not done a VENV)
 Add this package to your `requirements.txt` (adjust the relative path as
 needed):
 
 ```
-./work_order_classifier
+./SchoolLocationFuzzyMatch
 ```
 
 Install with pip: `pip install -r requirements.txt`
@@ -46,7 +47,7 @@ Install with pip: `pip install -r requirements.txt`
 Load the model and make predictions:
 
 ```python
-from work_order_classifier import load_model
+from SchoolLocationFuzzyMatch import load_model
 
 pipeline = load_model()
 pipeline.predict(X)
@@ -62,12 +63,12 @@ from distutils.core import setup
 
 setup(name='work_order_classifier',
       version='$version',
-      description='Work Order Classifier',
-      author='Zac Stewart',
-      author_email='zgstewart@gmail.com',
-      url='https://github.com/zacstewart/work_order_classifier',
-      packages=['work_order_classifier'],
-      package_data={'work_order_classifier': ['data/pipeline.pkl']},
+      description='School Type Classifier',
+      author='Lee Prevost',
+      author_email='lee.prevost@dudesolutions.com',
+      url='TBD',
+      packages=['SchoolLocationFuzzyMatch'],
+      package_data={'SchoolLocationFuzzyMatch': ['data/pipeline.pkl']},
       install_requires=[
           'scikit-learn==0.19.0',
           'scipy==0.19.0',
@@ -99,29 +100,31 @@ def build_path():
     return path.join(BASE_PATH, 'builds', current_git_sha())
 
 
+CL_DIR = os.path.join(BASE_PATH, "classifier")
+
 def copy_model_definition_into_build():
     shutil.copyfile(
-        path.join('work_order_classifier', '__init__.py'),
-        path.join(build_path(), 'work_order_classifier', '__init__.py'))
+        path.join(CL_DIR, '__init__.py'),
+        path.join(build_path(),  '__init__.py'))
     shutil.copyfile(
-        path.join('work_order_classifier', 'classifier.py'),
-        path.join(build_path(), 'work_order_classifier', 'classifier.py'))
+        path.join(CL_DIR, 'classifier.py'),
+        path.join(build_path(),  'classifier.py'))
     shutil.copyfile(
-        path.join('work_order_classifier', 'transformers.py'),
-        path.join(build_path(), 'work_order_classifier', 'transformers.py'))
+        path.join(CL_DIR, 'transformers.py'),
+        path.join(build_path(), 'transformers.py'))
 
 
 def ensure_build_dirs_exists():
     makedirs(build_path(), exist_ok=True)
-    makedirs(path.join(build_path(), 'work_order_classifier'), exist_ok=True)
+    makedirs(path.join(build_path(), CUR_DIR), exist_ok=True)
     makedirs(path.join(
-        build_path(), 'work_order_classifier', 'data'), exist_ok=True)
+        build_path(), CUR_DIR, 'data'), exist_ok=True)
 
 
 def produce_build_artifact(pipeline, train_file, instances):
     ensure_build_dirs_exists()
     joblib.dump(pipeline, path.join(
-        build_path(), 'work_order_classifier', 'data', 'pipeline.pkl'))
+        build_path(), 'data', 'pipeline.pkl'))
     copy_model_definition_into_build()
     add_package_setup_to_build(current_git_sha())
     add_readme_to_build(current_git_sha(), train_file, instances)
@@ -132,7 +135,7 @@ if __name__ == '__main__':
         description='Builds a trained model for deployment')
     parser.add_argument('-t', '--train',
                         action='store',
-                        default='data/work_orders.clean.csv',
+                        default='data/Train_clean_with_support.csv',
                         dest='train_file',
                         help='Dataset to train on')
 
@@ -142,8 +145,12 @@ if __name__ == '__main__':
 
     print('Loading data file...')
     data = pd.read_csv(args.train_file, encoding='iso-8859-1')
-    X = data.drop(['Class'], axis=1)
-    y = data['Class']
+    
+    x_cols = ['norm_SCH_NAME', 'ST']
+    y_col = 'LEVEL'
+    
+    X = data[x_cols]
+    y = data[y_col]
 
     print('Training the model...')
     pipeline.fit(X, y)
