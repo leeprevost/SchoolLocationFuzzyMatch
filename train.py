@@ -99,8 +99,8 @@ def add_readme_to_build(version, train_file, instances):
 def build_path():
     return path.join(BASE_PATH, 'builds', current_git_sha())
 
-
-CL_DIR = os.path.join(BASE_PATH, "classifier")
+CUR_DIR = 'SchoolLocationFuzzyMatch'
+CL_DIR = path.join(BASE_PATH, "classifier")
 
 def copy_model_definition_into_build():
     shutil.copyfile(
@@ -124,7 +124,7 @@ def ensure_build_dirs_exists():
 def produce_build_artifact(pipeline, train_file, instances):
     ensure_build_dirs_exists()
     joblib.dump(pipeline, path.join(
-        build_path(), 'pipeline.pkl'))
+        build_path(), CUR_DIR, 'data', 'pipeline.pkl'))
     copy_model_definition_into_build()
     add_package_setup_to_build(current_git_sha())
     add_readme_to_build(current_git_sha(), train_file, instances)

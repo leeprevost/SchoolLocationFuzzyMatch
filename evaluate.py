@@ -89,7 +89,7 @@ if __name__ == '__main__':
     y_col = 'LEVEL'
     
     # add support and admin training data
-    inc_data = pd.read_csv(os.path.join(DATA_DIR, 'support-admin training.csv')
+    inc_data = pd.read_csv(os.path.join(DATA_DIR, 'support-admin training.csv'))
     
     #map and rename the columsn from inc_data to line up with data
     inc_data_cols = ['normLocDesc', 'class']
