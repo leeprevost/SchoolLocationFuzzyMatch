@@ -1,5 +1,10 @@
 from sklearn.metrics import confusion_matrix, f1_score
 from sklearn.model_selection import StratifiedShuffleSplit
+from sklearn.feature_selection import SelectKBest, chi2
+from sklearn.feature_extraction.text import CountVectorizer
+from classifier.classifier import pipeline
+from confusion import plot_confusion_matrix
+
 from termcolor import cprint
 import argparse
 import json
@@ -7,8 +12,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from classifier.classifier import pipeline
-from confusion import plot_confusion_matrix
+
 from utils import current_git_sha
 from helpers import k12_clean
 import os
@@ -75,6 +79,12 @@ if __name__ == '__main__':
                         default=False,
                         dest='confusion_matrix',
                         help='Compute a confusion matrix')
+    parser.add_argument('-ch', "--chi2_select",
+                        action="store_const", 
+                        const=True,
+                        default=False,
+                        dest="select_chi2",
+                        help="Select some number of features using a chi-squared test")
     
     args = parser.parse_args()
 
@@ -134,6 +144,26 @@ if __name__ == '__main__':
         (train_idx, test_idx) = split
         train_X, train_y = X.iloc[train_idx], y[train_idx]
         test_X, test_y = X.iloc[test_idx], y[test_idx]
+        
+    if args.select_chi2:
+        
+        vectorizer = CountVectorizer(analyzer = "char_wb", ngram_range=(1,2))
+        X_ch2 = vectorizer.fit_transform(train_X['norm_SCH_NAME'])
+        
+        feature_names = vectorizer.get_feature_names()
+        
+        ch2 = SelectKBest(chi2, k=1000)
+        X_ch2 = ch2.fit_transform(X_ch2, train_y)
+        ch2_df = pd.DataFrame(index = feature_names )
+        ch2_df['scores']= ch2.scores_
+        ch2_df['pvalues']= ch2.pvalues_
+        ch2_df['support']= ch2.get_support()
+        
+        if feature_names:
+            # keep selected feature names
+            feature_names = [feature_names[i] for i
+                             in ch2.get_support(indices=True)]
+        
 
     pipeline.fit(train_X, train_y)
     y_true = test_y
