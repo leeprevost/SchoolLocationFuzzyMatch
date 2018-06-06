@@ -90,7 +90,7 @@ if __name__ == '__main__':
 
     np.random.seed(0)
 
-    data = pd.read_csv(args.train_file, encoding='iso-8859-1')
+    data = pd.read_csv(args.train_file, encoding='iso-8859-1', low_memory= False)
     
     
     
